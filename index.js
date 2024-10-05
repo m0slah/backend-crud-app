@@ -59,6 +59,21 @@ app.put("/product/:id", async (req, res) => {
   }
 });
 
+app.delete("/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "product not found" });
+    }
+
+    res.status(200).json({ message: "Product Delete Sucessfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(process.env.MONGO_URI, { connectTimeoutMS: 30000 })
   .then(() => {
