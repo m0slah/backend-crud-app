@@ -22,11 +22,20 @@ app.get("/products", async (req, res) => {
 });
 
 app.post("/products", async (req, res) => {
-  // const { name, price, quantity, image } = req.body;
   try {
     const product = await Product.create(req.body);
     res.status(200).json(product);
   } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.get("/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ message: err.message });
   }
 });
